@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous</title>
+    <link rel="icon" href="img/ico2.png" type="image/x-icon"> <!-- Add this line -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="bg-gray-800 py-2 px-4 flex items-center justify-between">
+        <div class="flex items-center cursor-pointer" id="backToWebex">
+            <img src="img/ico3.png?height=30&width=30" alt="Luminous Logo" class="w-8 h-8 mr-2">
+            <h1 class="text-xl font-bold">Luminous</h1>
+        </div>
+        <div class="flex-grow flex justify-center mx-4">
+            <input type="text" id="search-bar" placeholder="Search or Enter YouTube Video URL" class="w-full max-w-xl bg-gray-700 text-white px-4 py-2 rounded-full">
+        </div>
+        
+        <div class="flex items-center">
+            <button id="help" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
+                <i class="ri-question-line"></i>
+            </button>
+            <div class="relative">
+                <button id="profileButton" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
+                    <i class="ri-user-3-line"></i>
+                </button>
+                <!-- Profile Dropdown -->
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20 hidden">
+                    <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div id="notification"
+        class="fixed bottom-0 right-0 mb-4 mr-4 bg-gray-800 text-white p-4 rounded-lg hidden transition-all duration-300 ease-in-out">
+        <p id="notificationMessage"></p>
+    </div>
+
+    <div class="max-w-screen-2xl mx-auto p-4 flex flex-col lg:flex-row">
+        <!-- Main content (left side) -->
+        <div class="lg:w-3/4 lg:pr-4">
+            <div class="relative aspect-video bg-gray-800 rounded-lg overflow-hidden mb-4">
+                <!-- Jitsi Meet Embed -->
+                <iframe
+                    id="jitsiMeetFrame"
+                    allow="camera; microphone; fullscreen; display-capture"
+                    src="https://web.webex.com/meetings"
+                    style="width: 100%; height: 100%; border: 0;"
+                    allowfullscreen
+                ></iframe>
+            
+                <!-- Pause Overlay -->
+                <div id="pauseOverlay" class="absolute inset-0 bg-black bg-opacity-100 hidden flex items-center justify-center z-20">
+                    <button id="playPauseBtn" class="hover:text-gray-300">
+                        <i class="ri-pause-circle-fill text-6xl text-white"></i>
+                    </button>
+                </div>
+            
+                <!-- YouTube video (hidden) -->
+                <div id="youtubePlayer" class="hidden"></div>
+            
+                <!-- Overlay to disable Jitsi Meet interaction -->
+                <div id="jitsiOverlay" class="absolute inset-0 bg-transparent hidden"></div>
+            
+                <!-- Live indicator -->
+                <div class="absolute top-4 left-4 bg-red-600 text-white px-2 py-1 rounded-md flex items-center">
+                    <div class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                    <span class="text-sm font-semibold">LIVE</span>
+                </div>
+            
+                <!-- Viewer count -->
+                <div class="absolute top-4 right-4 bg-black bg-opacity-60 text-white px-2 py-1 rounded-md flex items-center">
+                    <i class="ri-eye-line mr-2"></i>
+                    <span class="text-sm font-semibold" id="viewerCount">Loading...</span>
+                </div>
+            
+                <!-- Media controls overlay -->
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 z-30 media-controls ">
+                    <!-- Progress bar (for live stream) -->
+                    <div class="relative h-1 bg-gray-600 rounded-full mb-4">
+                        <div class="absolute left-0 top-0 h-full w-[99.70%] bg-red-600 rounded-full"></div>
+                        <div class="absolute right-0 top-0 h-full w-[0.20%] bg-gray-600 rounded-full"></div>
+                        <div class="absolute top-[-5px] left-[99.70%] h-4 w-4 bg-red-600 rounded-full transform translate-x-[-50%]"></div>
+                    </div>
+            
+                    <!-- Controls -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <button id="playPauseButton" class="hover:text-gray-300">
+                                <i class="ri-play-fill text-2xl"></i>
+                            </button>
+                            <div class="flex items-center space-x-2">
+                                <button id="volumeButton" class="hover:text-gray-300">
+                                    <i class="ri-volume-up-fill text-2xl"></i>
+                                </button>
+                                
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-red-600 rounded-full mr-2"></div>
+                                <span class="text-sm">LIVE</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <button id="ccButton" class="hover:text-gray-300">
+                                    <i class="ri-closed-captioning-fill text-xl"></i>
+                                </button>
+                                <div id="ccMenu" class="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 rounded-md shadow-lg hidden">
+                                    <div class="p-2">
+                                        <h3 class="font-semibold mb-2">Subtitles/CC</h3>
+                                        <ul class="space-y-1">
+                                            <li class="flex items-center">
+                                                <input type="radio" id="cc-off" name="cc" class="mr-2" checked>
+                                                <label for="cc-off">Off</label>
+                                            </li>
+                                            <li class="flex items-center">
+                                                <input type="radio" id="cc-en" name="cc" class="mr-2">
+                                                <label for="cc-en">English</label>
+                                            </li>
+                                            <li class="flex items-center">
+                                                <input type="radio" id="cc-es" name="cc" class="mr-2">
+                                                <label for="cc-es">Spanish</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button id="qualityButton" class="hover:text-gray-300">
+                                    <i class="ri-settings-3-fill text-xl"></i>
+                                </button>
+                                <div id="qualityMenu" class="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 rounded-md shadow-lg hidden">
+                                    <div class="p-2">
+                                        <h3 class="font-semibold mb-2">Quality</h3>
+                                        <ul class="space-y-1">
+                                            <li class="flex items-center">
+                                                <input type="radio" id="quality-auto" name="quality" class="mr-2" checked>
+                                                <label for="quality-auto">Auto</label>
+                                            </li>
+                                            <li class="flex items-center">
+                                                <input type="radio" id="quality-1080p" name="quality" class="mr-2">
+                                                <label for="quality-1080p">1080p</label>
+                                            </li>
+                                            <li class="flex items-center">
+                                                <input type="radio" id="quality-720p" name="quality" class="mr-2">
+                                                <label for="quality-720p">720p</label>
+                                            </li>
+                                            <li class="flex items-center">
+                                                <input type="radio" id="quality-480p" name="quality" class="mr-2">
+                                                <label for="quality-480p">480p</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="fullscreenButton" class="hover:text-gray-300">
+                                <i class="ri-fullscreen-fill text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+            
+
+
+            <!-- Stream title and actions with matching background -->
+            <div class="mb-4 bg-gray-800 p-4 rounded-lg">
+                <h2 class="text-2xl font-bold mb-2" id="videoTitle">Loading...</h2>
+                <div class="flex items-center justify-between flex-wrap">
+                    <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+                        <img src="/placeholder.svg?height=40&width=40" alt="Channel Avatar" class="w-10 h-10 rounded-full" id="channelAvatar">
+                        <div>
+                            <p class="font-semibold" id="channelName">Loading...</p>
+                            <p class="text-sm text-gray-400" id="subscriberCount">Loading...</p>
+                        </div>
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-semibold">Subscribe</button>
+                    </div>
+                    <div class="flex items-center space-x-2 flex-wrap">
+                        <button class="bg-gray-800 px-4 py-2 rounded-full flex items-center">
+                            <i class="ri-thumb-up-line mr-2"></i>
+                            <span id="likeCount">Loading...</span>
+                        </button>
+                        <button class="bg-gray-800 px-4 py-2 rounded-full flex items-center">
+                            <i class="ri-thumb-down-line mr-2"></i>
+                            <span>Dislike</span>
+                        </button>
+                        <button class="bg-gray-800 px-4 py-2 rounded-full flex items-center">
+                            <i class="ri-share-forward-line mr-2"></i>
+                            <span>Share</span>
+                        </button>
+                        <button id="moreButton" class="bg-gray-800 w-10 h-10 rounded-full flex items-center justify-center">
+                            <i class="ri-more-2-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center bg-gray-800 rounded-lg p-4 mb-4">
+                <h2 class="text-lg font-semibold">Live Chat</h2>
+                <div>
+                    <label for="chat-toggle" class="block text-sm font-medium mb-2">Chat Control:</label>
+                    <select id="chat-toggle" class="bg-gray-700 text-white p-2 rounded">
+                        <option value="off">Off</option>
+                        <option value="on">On</option>
+                        <option value="hide">Hide</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="live-chat-section" class="bg-gray-800 rounded-lg p-4 mb-4">
+                <div id="warning-message" class="hidden bg-yellow-500 text-black p-2 rounded mb-4">
+                    Warning: Chat is on. High API usage can reach limit in 1 hour. We recommend turning it off when not needed.
+                </div>
+                <div class="space-y-4 mb-4 h-96 overflow-y-auto" id="live-chat"></div>
+                <input type="text" class="w-full bg-gray-700 p-2 rounded" placeholder="Type a message..." id="chat-input">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded mt-2" id="send-chat">Send</button>
+            </div>
+            
+
+            <!-- Additional suggestions -->
+            <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-4">More Suggestions</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="video-container">
+                    <!-- Video thumbnails will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggestions (right side) -->
+        <div class="lg:w-1/4 mt-4 lg:mt-0">
+            <h2 class="text-lg font-semibold mb-4">Suggested Videos</h2>
+            <div class="space-y-4" id="suggested-videos">
+                <!-- Vertical suggested videos will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+    <div class="profile-pic" onclick="openNewTab()">
+        <img src="https://s-hadowheart.carrd.co/assets/images/image01.jpg?v=91985b0d" alt="Profile Picture" class="round">
+      </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js" defer></script>
+
+
+<style>
+        
+    .blur-720 {
+filter: blur(1.5px); /* Adjust blur amount for 720p */
+}
+
+.blur-480 {
+filter: blur(2px); /* Adjust blur amount for 480p */
+}
+
+.profile-pic {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .round {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+
+
+
+
+</style>
+</body>
+</html>

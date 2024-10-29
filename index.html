@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Luminous</title>
+    <link rel="icon" href="img/ico2.png" type="image/x-icon"> <!-- Add this line -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+
+</head>
+
+<body class="bg-gray-900 text-white flex">
+
+    <!-- Header -->
+    <header class="bg-gray-800 py-2 px-4 flex items-center justify-between fixed w-full z-10">
+        
+        <button id="toggleSidebar" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center">
+            <i class="ri-menu-line"></i>
+        </button>
+        <div id="apps"class="flex items-center cursor-pointer" id="backToWebex">
+            <img src="img/ico3.png?height=30&width=30" alt="Luminous Logo" class="w-8 h-8 mr-2">
+            <h1 class="text-xl font-bold">Luminous</h1>
+        </div>
+
+        <div class="flex items-center">
+            <button id="configButton" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
+                <i class="ri-settings-3-line"></i>
+            </button>
+            <div class="relative">
+                <button id="profileButton"
+                    class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
+                    <i class="ri-user-3-line"></i>
+                </button>
+                <!-- Profile Dropdown -->
+                <div id="profileDropdown"
+                    class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20 hidden">
+                    <button id="logoutButton"
+                        class="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu -->
+    <div id="sideMenu" class="w-64 h-screen bg-gray-800 fixed top-19 transform transition-transform duration-300">
+        <div class="p-4">
+            <h2 class="text-xl font-bold mb-4">Menu</h2>
+            <ul class="space-y-2">
+                <li><button id="howToStart" class="block w-full text-left hover:bg-gray-700 p-2 rounded">How to
+                        Start</button></li>
+                <li><button id="startMeeting" class="block w-full text-left hover:bg-gray-700 p-2 rounded">Start
+                        Meeting</button></li>
+                <li>
+                    <button class="block w-full text-left  p-2 rounded underline" id="hiddenFeatures">
+                        Hidden Features
+                    </button>
+                    <ul class="ml-4">
+                        <li id="hidebutton"><button class="block text-left hover:bg-gray-700 p-2 rounded">Hide Media
+                                Control</button></li>
+                        <li id="stop_musicbtn"><button class="block text-left hover:bg-gray-700 p-2 rounded">Stop
+                                Background Music</button></li>
+                        <li id="stop_interactbtn"><button class="block text-left hover:bg-gray-700 p-2 rounded">Pause
+                                Interaction with Meeting</button></li>
+                        <li id="back_meetbtn"><button class="block text-left hover:bg-gray-700 p-2 rounded">Back to
+                                Meeting</button></li>
+                    </ul>
+                </li>
+                <li><button id="everything_stuckbtn" class="block w-full text-left hover:bg-gray-700 p-2 rounded">everything loading</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification"
+        class="fixed bottom-0 right-0 mb-4 mr-4 bg-gray-800 text-white p-4 rounded-lg hidden transition-all duration-300 ease-in-out">
+        <p id="notificationMessage"></p>
+    </div>
+
+    <!-- How to Start Section -->
+    <div id="howToStartSection" class="flex flex-col items-center justify-center p-8 mt-16 mx-auto hidden max-w-3xl">
+        <h2 class="text-3xl font-bold mb-6 text-white">🎉 How to Get Started with YouTube Data API!</h2>
+        <p class="mb-4 text-gray-300">Welcome! Let's embark on a fun journey to access YouTube's awesome data. Here's how you can get started:</p>
+    
+        <h3 class="text-2xl font-semibold mt-4 text-white">Step 1: Get Your YouTube Data API Key</h3>
+        <p class="mb-4 text-gray-300">To access the YouTube API, you need an API key. Follow these steps:</p>
+        <ul class="list-disc ml-8 mb-6 text-gray-300">
+            <li>Go to the <a href="https://console.cloud.google.com/apis/api/youtube.googleapis.com" class="text-blue-400" target="_blank">Google Cloud Console</a>.</li>
+            <li>Create a new project or select an existing one.</li>
+            <li>Enable the YouTube Data API v3 for your project.</li>
+            <li>Create credentials (API Key) under the "Credentials" tab.</li>
+        </ul>
+    
+        <h3 class="text-2xl font-semibold mt-4 text-white">Step 2: Find Video ID (Optional)</h3>
+        <p class="mb-4 text-gray-300">To get the video ID, simply open any YouTube video and look at the URL in your browser. It will look something like this:</p>
+        <p class="font-mono text-lg text-gray-200">https://www.youtube.com/watch?v=<strong>VIDEO_ID</strong></p>
+    
+        <h3 class="text-2xl font-semibold mt-4 text-white">Step 3: Get Channel ID (Optional)</h3>
+        <p class="mb-4 text-gray-300">You can retrieve the channel ID using the following link:</p>
+        <p class="font-mono text-lg text-gray-200 whitespace-nowrap">https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=CHANNEL_NAME&key=YOUR_API_KEY</p>
+    
+        <h3 class="text-2xl font-semibold mt-4 text-white">Step 4: Enter Details in Configuration</h3>
+        <p class="mb-4 text-gray-300">Once you have your API key, video ID, and channel ID, click on the gear icon at the top right corner of the page to open the configuration.</p>
+        <p class="text-gray-300">Enter your details in the respective fields and save!</p>
+    
+        <h3 class="text-2xl font-semibold mt-4 text-white">Step 5: Open the App</h3>
+        <p class="mb-4 text-gray-300">After saving your details, click on the luminous icon or text at the top of the page to open the app and start exploring!</p>
+    </div>
+    
+
+    <div id="startMeetingSection" class="flex flex-col items-center justify-center p-8 mt-16 mx-auto hidden max-w-3xl">
+        <h2 class="text-3xl font-bold mb-6 text-white">🎉 How to Start a Webex Meeting!</h2>
+        <p class="mb-4 text-gray-300">Let's get you ready to host or join a meeting with your friends. Here’s what you
+            need to do:</p>
+
+        <h3 class="text-2xl font-semibold mt-4 text-white">For Android Users</h3>
+        <p class="mb-4 text-gray-300">Tell your friend to make a Cisco Webex meeting and go to this website:</p>
+        <p class="font-mono text-lg text-gray-200">
+            <a href="https://help.webex.com/en-us/article/ne50jcfb/Start-a-Webex-Meeting#reference_FCE328F35290D2344E1D4E6FE1BEFA56"
+                class="text-blue-400" target="_blank">Start a Webex Meeting for Android</a>
+        </p>
+
+        <h3 class="text-2xl font-semibold mt-4 text-white">For Windows or Mac Users</h3>
+        <p class="mb-4 text-gray-300">You can start meetings that you host directly from your Webex site:</p>
+        <ul class="list-disc ml-8 mb-6 text-gray-300">
+            <li>Log in to your organization’s Webex Meetings site.</li>
+            <li>Your upcoming meetings list is shown in the Upcoming Meetings section.</li>
+            <li>Locate your meeting and select Start to begin.</li>
+        </ul>
+
+        <h3 class="text-2xl font-semibold mt-4 text-white">Joining the Meeting</h3>
+        <p class="mb-4 text-gray-300">Once you're logged in, simply click on "Join" for your meeting, then:</p>
+        <ul class="list-disc ml-8 mb-6 text-gray-300">
+            <li>Click on "Meeting Info" and copy the invite link.</li>
+            <li>Open our app (Luminous) and click on "Join Meeting."</li>
+            <li>Paste the URL, enter your name, and join as a guest.</li>
+            <li>Ask your friend to allow you to join.</li>
+        </ul>
+        <p class="text-lg text-green-400 font-semibold">🎉 All set! Enjoy your meeting! 🎉</p>
+    </div>
+
+
+    <div id="hide_media_contorl"
+        class="flex flex-col items-center justify-center p-8 mt-16 mx-auto max-w-3xl mx-auto bg-gray-900 p-8 rounded-lg text-white hidden">
+        <h2 class="text-3xl font-bold mb-4">Hide Media Control: Toggle the Controls On/Off!</h2>
+        <p class="mb-6 text-lg">
+            So, you want to clear up your screen a bit? Say no more! 🎩✨ With our nifty toggle button, it’s super easy
+            to hide those media controls when you don’t need them. Let's dive in!
+        </p>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 1: Spot the 3-Dots Toggle Button</h3>
+            <p class="mb-4">
+                Look closely, right beside the <strong>Share</strong> button—there it is! Those three sneaky dots (...)
+                are your secret weapon. 🕵️‍♂️
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for screenshot -->
+                <img src="img/hide1.png" alt="Three Dots Button" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 2: Click the 3 Dots for Magic! 🎯</h3>
+            <p class="mb-4">
+                Click on the 3 dots, and watch the <strong>media controls</strong> vanish (or reappear) like a magician
+                waving a wand. ✨🐰 It’s like having your own little show-and-hide button!
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for screenshot -->
+                <img src="img/hide2.png" alt="Toggle Button Magic" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 3: Enjoy Your Clean Screen View 🖥️✨</h3>
+            <p class="mb-4">
+                Now, bask in the glory of a tidier screen without all those controls. And if you ever need them back,
+                just click the 3 dots again. It’s like having a magical toggle in your pocket!
+            </p>
+        </div>
+
+        <div class="text-center">
+            <p class="text-xl">🎩✨ Simple, huh? Go ahead, try it out!</p>
+        </div>
+    </div>
+
+    <div id="stop_music"
+        class="flex flex-col items-center justify-center p-8 mt-16 mx-auto max-w-3xl mx-auto bg-gray-900 p-8 rounded-lg text-white hidden">
+        <h2 class="text-3xl font-bold mb-4">Stop Background Music: Pause or Mute like a Pro! 🎶🚫</h2>
+        <p class="mb-6 text-lg">
+            Got some background music playing while in a meeting? Let’s show you how to pause or mute it without
+            disrupting your focus! Here’s your quick guide to mastering the controls.
+        </p>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 1: Find the Mute Button 🎚️</h3>
+            <p class="mb-4">
+                See that <strong>mute button</strong> in the media controls? It’s your magic switch to instantly hush
+                the background music. Click on it, and voilà—the music fades away while your meeting stays undisturbed.
+                🎯✨
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for screenshot -->
+                <img src="img/m1.png" alt="Mute Button in Media Controls" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 2: Use the Pause Button for Extra Magic! 🛑✨</h3>
+            <p class="mb-4">
+                If you want to go all-in and pause everything, click the <strong>pause button</strong>. Not only will it
+                stop the background music, but your meeting will also be gently covered with a sleek black overlay.
+                🖥️💨
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for screenshot -->
+                <img src="img/m2.png" alt="Pause Button and Black Overlay" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="text-center">
+            <p class="text-xl">🎶✨ And there you have it—pause or mute like a pro!</p>
+        </div>
+    </div>
+
+    <div id="stop_interact"
+        class="flex flex-col items-center justify-center p-8 mt-16 mx-auto max-w-3xl mx-auto bg-gray-900 p-8 rounded-lg text-white hidden">
+        <h2 class="text-3xl font-bold mb-4">Pause Interaction with Meeting: Lock it like a Live Stream! 🎬🔒</h2>
+        <p class="mb-6 text-lg">
+            Want to lock your meeting like a live stream? With just a few clicks, you can temporarily pause all
+            interactions with your meeting. Let’s dive in! 🌊✨
+        </p>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 1: Click the CC Icon 📝</h3>
+            <p class="mb-4">
+                Locate the <strong>CC (Subtitles/CC)</strong> icon in the media controls. Once you click it, a list will
+                appear with various language options. By default, it’s set to <strong>Off</strong>. 🌟
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for the first screenshot -->
+                <img src="img/cc2.png" alt="CC Button" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 2: Choose a Language 🌐</h3>
+            <p class="mb-4">
+                Pick any language, like <strong>English</strong> or <strong>Spanish</strong>, from the list. Once
+                selected, your meeting transforms! No matter how hard you try to click within the meeting, it’ll be
+                locked down like a live stream—no interactions allowed! 📺🚫
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <!-- Placeholder for the second screenshot -->
+                <img src="img/cc1.png" alt="Language Selection" class="w-full rounded-md">
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-3">Step 3: To Unlock, Turn Off CC 🔓</h3>
+            <p class="mb-4">
+                To bring back interactivity, simply <strong>turn off the CC</strong> by selecting <strong>Off</strong>
+                from the list again. You’re now free to use your meeting like a regular website or app! 🎯
+            </p>
+        </div>
+
+        <div class="text-center">
+            <p class="text-xl">✨ There you go! Lock or unlock the meeting interaction anytime with a simple click! 🚀
+            </p>
+        </div>
+
+
+    </div>
+
+    <div id="back_meet"
+        class="flex flex-col items-center justify-center p-8 mt-16 mx-auto max-w-3xl mx-auto bg-gray-900 p-8 rounded-lg text-white hidden">
+        <h2 class="text-lg font-bold mb-2">Back to Meeting</h2>
+        <p class="mb-4">
+            If you're watching other videos and want to quickly return to your meeting, just click on the <strong
+                class="text-blue-500">Luminous</strong> text or icon, and tada!!
+        </p>
+
+        <div class="bg-gray-700 rounded-lg p-4 mb-4">
+            <!-- Placeholder for screenshot -->
+            <img src="img/meet.png" alt="Back to Meeting Icon" class="w-50 h-50 rounded shadow-lg" />
+
+        </div>
+
+    </div>
+
+    <div id="everything_stuck"
+        class="flex flex-col items-center justify-center p-8 mt-16 mx-auto max-w-3xl mx-auto bg-gray-900 p-8 rounded-lg text-white hidden">
+        <h2 class="text-lg font-bold mb-2">Everything Loading...</h2>
+        <p class="mb-4">When you enter your API and navigate to the app, you may see the loading screen related to YouTube. This could mean a couple of things:</p>
+        <div class="bg-gray-700 rounded-lg p-4 mb-4">
+            <!-- Placeholder for screenshot -->
+            <img src="img/stuck.png" alt="Three Dots Button" class="w-full rounded-md">
+        </div>
+        <ol class="list-decimal list-inside mb-4">
+            <li class="mb-2">
+                <strong>Quota Limit Reached:</strong> You might have reached your YouTube Data API limit. 
+                For more information on managing your quota, check out the official guide: 
+                <a href="https://cloud.google.com/docs/quotas/view-manage?authuser=1#managing_your_quota_console" class="text-blue-400 underline hover:text-blue-300">Quota Management</a>.
+            </li>
+            <li>
+                <strong>Invalid API Key:</strong> The API key you entered may be incorrect or invalid. 
+                Please double-check your API key and try again.
+            </li>
+        </ol>
+    
+        <p class="italic">If you continue experiencing issues, please check your API settings or consult the documentation for further assistance!</p>
+    </div>
+    
+
+    <!-- Configuration Modal -->
+    <div id="configModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-900 bg-opacity-75 z-20">
+        <div class="bg-gray-800 p-6 rounded-lg w-1/2">
+            <h2 class="text-lg font-bold mb-4">Configuration</h2>
+            <label class="block mb-2">API Key:</label>
+            <input id="apiKeyInput" type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4"
+                placeholder="Enter API Key">
+            <label class="block mb-2">Video ID:</label>
+            <input id="videoIdInput" type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4"
+                placeholder="Enter Video ID" value="jfKfPfyJRdk">
+            <label class="block mb-2">Chat ID (Optional):</label>
+            <input id="chatIdInput" type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4"
+                placeholder="Enter Chat ID" value="Cg0KC2pmS2ZQZnlKUmRrKicKGFVDU0o0Z2tWQzZOcnZJSTh1bXp0ZjBPdxILamZLZlBmeUpSZGs">
+            <label class="block mb-2">Channel ID:</label>
+            <input id="channelIdInput" type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4"
+                placeholder="Enter Channel ID" value="UCSJ4gkVC6NrvII8umztf0Ow">
+            <div class="flex justify-between">
+                <button id="saveButton" class="bg-green-600 px-4 py-2 rounded">Save</button>
+                <button id="closeButton" class="bg-red-600 px-4 py-2 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-pic" onclick="openNewTab()">
+        <img src="https://s-hadowheart.carrd.co/assets/images/image01.jpg?v=91985b0d" alt="Profile Picture" class="round">
+      </div>
+    <script src="script.js" defer></script>
+
+</body>
+<style>
+     .profile-pic {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .round {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+</style>
+
+</html>

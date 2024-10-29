@@ -22,7 +22,7 @@ In a digital world where privacy and connections are crucial, Luminous provides 
 
 *Video coming soon! Stay tuned for a detailed walkthrough of Luminous and its features.*
 
-### Try It Out!
+### [Try It Out!](https://luminous-7t7d.onrender.com)
 
 Currently, Luminous is in its early stages. You can explore the project and its updates on GitHub:
 

@@ -13,7 +13,7 @@
     
         // Retrieve values from cookies
         const API_KEY = "AIzaSyAOf49NbII0E2O_iDA4njaCt3ANOJBJPNk";
-        const VIDEO_ID = "Q89Dzox4jAE";
+        const VIDEO_ID = 'OO2kPK5-qno';
         const CHANNEL_ID = getCookie('channelId');
         const LIVE_CHAT_ID = getCookie('chatId');
     
@@ -234,6 +234,63 @@
                     {pauseOverlay.classList.remove('hidden');}
                 }
             }
+
+            
+    async function getRandomWord() {
+        const response = await fetch('https://random-word-api.herokuapp.com/word?number=2');
+        const words = await response.json();
+        return words;
+    }
+    
+    async function getRandomTitleAndChannel() {
+        const words = await getRandomWord();
+        
+        const title = `The ${words[0]} ${words[1]} Adventure`;
+        const channel = `${words[0]} ${words[1]} Society`;
+    
+        return { title, channel };
+    }
+    
+    async function fetchVideoDetails(videoId) {
+        const url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
+    
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+    
+            if (data.error) {
+                throw new Error(data.error);
+            }
+    
+            document.getElementById('videoTitle').textContent = data.title;
+            document.getElementById('channelName').textContent = data.author_name;
+            document.getElementById('channelAvatar').src = data.thumbnail_url;
+    
+            document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 50000) + 5000} views`;
+            document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 1000} likes`;
+            document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
+    
+        } catch (error) {
+            console.error("Error fetching video details: ", error);
+            
+            // Get random avatar
+            const randomAvatar = await getRandomAvatar(); 
+            
+            // Get random title and channel name
+            const { title, channel } = await getRandomTitleAndChannel();
+    
+            document.getElementById('videoTitle').textContent = title;
+            document.getElementById('channelName').textContent = channel;
+            document.getElementById('channelAvatar').src = randomAvatar;
+    
+            document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 500) + 100} watching live`;
+            document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 500} likes`;
+            document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
+        }
+    }
+    
+      
+  
     
             // Fetch video details
             // async function fetchVideoDetails(VIDEO_ID) {
@@ -541,58 +598,3 @@
     function openNewTab() {
         window.open('https://s-hadowheart.carrd.co', '_blank');
       }
-      async function getRandomWord() {
-          const response = await fetch('https://random-word-api.herokuapp.com/word?number=2');
-          const words = await response.json();
-          return words;
-      }
-      
-      async function getRandomTitleAndChannel() {
-          const words = await getRandomWord();
-          
-          const title = `The ${words[0]} ${words[1]} Adventure`;
-          const channel = `${words[0]} ${words[1]} Society`;
-      
-          return { title, channel };
-      }
-      
-      async function fetchVideoDetails(videoId) {
-          const url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
-      
-          try {
-              const response = await fetch(url);
-              const data = await response.json();
-      
-              if (data.error) {
-                  throw new Error(data.error);
-              }
-      
-              document.getElementById('videoTitle').textContent = data.title;
-              document.getElementById('channelName').textContent = data.author_name;
-              document.getElementById('channelAvatar').src = data.thumbnail_url;
-      
-              document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 50000) + 5000} views`;
-              document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 1000} likes`;
-              document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
-      
-          } catch (error) {
-              console.error("Error fetching video details: ", error);
-              
-              // Get random avatar
-              const randomAvatar = await getRandomAvatar(); 
-              
-              // Get random title and channel name
-              const { title, channel } = await getRandomTitleAndChannel();
-      
-              document.getElementById('videoTitle').textContent = title;
-              document.getElementById('channelName').textContent = channel;
-              document.getElementById('channelAvatar').src = randomAvatar;
-      
-              document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 500) + 100} watching live`;
-              document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 500} likes`;
-              document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
-          }
-      }
-      
-        
-    

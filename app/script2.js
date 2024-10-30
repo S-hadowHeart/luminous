@@ -173,7 +173,7 @@
     }
     
     async function fetchVideoDetails(videoId) {
-        const url = `https://invidious.jing.rocks/api/v1/videos/${videoId}`;
+        const url = `https://yt.drgnz.club/api/v1/videos/${videoId}`;
     
         try {
             const response = await fetch(url);

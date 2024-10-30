@@ -166,7 +166,15 @@
             </div>
             
 
-
+        <div id="searchResultsModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden overflow-auto">
+                <div class="bg-gray-800 rounded-lg p-6 max-w-8xl mx-auto flex flex-col max-h-[85vh]">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">Search Results</h2>
+                        <button id="closeModal" class="mt-4 px-4 py-2 bg-red-500 text-white rounded">Close</button>
+                    </div>
+                    <div id="searchResults" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 flex-1 overflow-y-auto mt-4"></div> <!-- Add margin-top to space it from the header -->
+                </div>
+            </div>
             
 
 

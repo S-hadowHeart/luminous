@@ -246,8 +246,8 @@
                     document.getElementById('videoTitle').textContent = video.snippet.title;
                     document.getElementById('viewerCount').textContent = `${video.liveStreamingDetails.concurrentViewers} watching`;
                     document.getElementById('likeCount').textContent = video.statistics.likeCount;
-                    const channelId = video.snippet.channelId
-                    fetchChannelDetails(channelId)
+                    const channelId = video.snippet.channelId;
+                    fetchChannelDetails(channelId);
     
                     if (video.liveStreamingDetails && video.liveStreamingDetails.activeLiveChatId) {
                 // Update LIVE_CHAT_ID to the new live chat ID

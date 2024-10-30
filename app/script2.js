@@ -173,7 +173,7 @@
     }
     
     async function fetchVideoDetails(videoId) {
-        const url = `https://yewtu.be/api/v1/videos/${videoId}`;
+        const url = `https://invidious.nerdvpn.de/api/v1/videos/${videoId}`;
     
         try {
             const response = await fetch(url);

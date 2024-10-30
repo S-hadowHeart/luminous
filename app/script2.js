@@ -25,6 +25,7 @@
             const volumeButton = document.getElementById('volumeButton');
             const pauseOverlay = document.getElementById('pauseOverlay');
             const jitsiMeetFrame = document.getElementById('jitsiMeetFrame');
+            const chatToggle = document.getElementById('chat-toggle')
     
             const notification = document.getElementById('notification');
             const notificationMessage = document.getElementById('notificationMessage');
@@ -93,6 +94,12 @@
                             volumeIcon.classList.remove('ri-volume-up-fill');
                             volumeIcon.classList.add('ri-volume-mute-fill');
                         }
+                        if (chatToggle.value !== 'hide') {
+                            const chatSection = document.getElementById('live-chat-section');
+                            // Change the selected option to 'hide'
+                            chatSection.classList.add('hidden');
+                            chatToggle.value = 'hide';
+                          }
                     });
                 });
             }
@@ -109,6 +116,14 @@
                     volumeIcon.classList.add('ri-volume-up-fill');
                     
                 }
+                if (chatToggle.value !== 'off') {
+                    const chatSection = document.getElementById('live-chat-section');
+                    const warningMessage = document.getElementById('warning-message');
+                    // Change the selected option to 'hide'
+                    warningMessage.classList.add('hidden');
+                    chatSection.classList.remove('hidden');
+                    chatToggle.value = 'off';
+                  }
                 fetchVideoDetails(VIDEO_ID)
                 
      
@@ -355,7 +370,7 @@
             });
     
     
-            document.getElementById('chat-toggle').addEventListener('change', (event) => {
+        document.getElementById('chat-toggle').addEventListener('change', (event) => {
         const chatSection = document.getElementById('live-chat-section');
         const warningMessage = document.getElementById('warning-message');
         const toggleValue = event.target.value;
@@ -427,6 +442,12 @@
                     volumeIcon.classList.remove('ri-volume-up-fill');
                     volumeIcon.classList.add('ri-volume-mute-fill');
                 }
+                if (chatToggle.value !== 'hide') {
+                    const chatSection = document.getElementById('live-chat-section');
+                    // Change the selected option to 'hide'
+                    chatSection.classList.add('hidden');
+                    chatToggle.value = 'hide';
+                  }
             }
         }
     });

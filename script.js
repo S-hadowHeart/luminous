@@ -22,6 +22,13 @@ const toggleSidebar = document.getElementById('toggleSidebar');
 
 
 
+// Function to redirect to app2.html
+function redirectToFunApp() {
+    window.location.href = 'app/app2.html'; // Redirect to the specified URL
+}
+
+// Attach click event listener to the fun button
+document.getElementById('funButton').addEventListener('click', redirectToFunApp);
 
 
 

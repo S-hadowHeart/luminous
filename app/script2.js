@@ -12,7 +12,7 @@
         }
     
         // Retrieve values from cookies
-        // const API_KEY = getCookie('apiKey');
+        const API_KEY = "AIzaSyAOf49NbII0E2O_iDA4njaCt3ANOJBJPNk";
         const VIDEO_ID = getCookie('videoId');
         const CHANNEL_ID = getCookie('channelId');
         const LIVE_CHAT_ID = getCookie('chatId');

@@ -21,10 +21,10 @@
                    
                 
         // Check if any of the cookies are not set
-        if (!API_KEY || !VIDEO_ID || !CHANNEL_ID) {
-            // Redirect to index.html if any cookie is missing
-            window.location.href = '../index.html';
-        }
+        // if (!API_KEY || !VIDEO_ID || !CHANNEL_ID) {
+        //     // Redirect to index.html if any cookie is missing
+        //     window.location.href = '../index.html';
+        // }
             const playPauseButton = document.getElementById('playPauseButton');
             const playPauseBtn = document.getElementById('playPauseBtn');
     

@@ -514,20 +514,70 @@
     });
     
     // Function to handle YouTube URL in the search bar
-    document.getElementById('search-bar').addEventListener('keypress', (event) => {
+    // Function to handle YouTube URL in the search bar
+    document.getElementById('search-bar').addEventListener('keypress', async (event) => {
         if (event.key === 'Enter') {
             const inputValue = event.target.value.trim();
-            const videoId = extractYouTubeVideoId(inputValue);
+            const formattedQuery = inputValue.replace(/ /g, '%20'); // Manually replace spaces with %20
     
-            if (videoId) {
-                // Hide media controls if visible
-                if (!mediaControls.classList.contains('hidden')) {
-                    mediaControls.classList.add('hidden');
+            if (!inputValue) {
+                alert('Please enter a search term.');
+                return;
+            }
+    
+            try {
+                const response = await fetch(`https://invidious.jing.rocks/api/v1/search?q=${formattedQuery}`);
+                if (!response.ok) throw new Error('Network response was not ok.');
+    
+                const results = await response.json();
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = ''; // Clear previous results
+    
+                // Check if there are video results
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<p class="text-gray-400">No results found.</p>';
+                    document.getElementById('searchResultsModal').classList.remove('hidden');
+                    return;
                 }
-                // Update the iframe to play the entered video
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    
+                // Populate the search results in the modal
+                results.forEach(video => {
+                    if (video.type === 'video') {
+                        const videoElement = document.createElement('div');
+                        videoElement.className = 'bg-gray-900 p-4 rounded-lg cursor-pointer hover:bg-gray-800 transition duration-200'; // Adjusted padding
+                        videoElement.innerHTML = `
+                            <img src="${video.videoThumbnails[0].url}" alt="${video.title}" class="w-full h-auto rounded-lg mb-2">
+                            <h2 class="text-lg font-semibold">${video.title}</h2>
+                            <p class="text-gray-400">${video.author}</p>
+                        `;
+    
+                        // Add click event to play the video
+                        videoElement.addEventListener('click', () => {
+                            const videoId = video.videoId;
+                            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                            fetchVideoDetails(videoId); // Call your function to fetch video details
+                            document.getElementById('searchResultsModal').classList.add('hidden'); // Close the modal
+                        });
+    
+                        searchResults.appendChild(videoElement);
+                    }
+                });
+    
+                // Set grid layout for the search results
+                searchResults.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4'; // Adjust for grid layout
+    
+                // Show the modal with results
+                document.getElementById('searchResultsModal').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('An error occurred while fetching data. Please try again later.');
             }
         }
+    });
+    
+    // Close modal button functionality
+    document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('searchResultsModal').classList.add('hidden'); // Hide the modal
     });
     
     // Function to extract YouTube Video ID from different URL formats

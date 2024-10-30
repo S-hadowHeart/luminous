@@ -24,6 +24,13 @@
                     </div>
                 </div><span class="translate-button-mtz translator-hidden"></span>
     <!-- Header -->
+    <div id="audio-container" class="hidden">
+        <audio id="chillhop-audio">
+          <source src="https://fluxfm.streamabc.net/flx-chillhop-mp3-128-8581707" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      
     <header class="bg-gray-800 py-2 px-4 flex items-center justify-between">
         <div class="flex items-center cursor-pointer" id="backToWebex">
             <img src="img/ico3.png?height=30&amp;width=30" alt="Luminous Logo" class="w-8 h-8 mr-2">
@@ -98,11 +105,11 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
                             <button id="playPauseButton" class="hover:text-gray-300">
-                                <i class="ri-pause-fill text-2xl"></i>
+                                <i class="ri-play-fill text-2xl"></i>
                             </button>
                             <div class="flex items-center space-x-2">
                                 <button id="volumeButton" class="hover:text-gray-300">
-                                    <i class="ri-volume-up-fill text-2xl"></i>
+                                    <i id="volumeIcon" class="ri-volume-up-fill text-2xl"></i>
                                 </button>
                                 
                             </div>

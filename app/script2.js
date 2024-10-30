@@ -17,7 +17,7 @@
         const CHANNEL_ID = getCookie('channelId');
         const LIVE_CHAT_ID = getCookie('chatId');
     
-        
+        playPauseButton.innerHTML = '<i class="ri-pause-fill text-2xl"></i>';
                    
                 
         // Check if any of the cookies are not set

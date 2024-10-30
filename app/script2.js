@@ -173,40 +173,45 @@
     }
     
     async function fetchVideoDetails(videoId) {
-        const url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
+        const url = `https://invidious.nerdvpn.de/api/v1/videos/${videoId}`;
     
         try {
             const response = await fetch(url);
             const data = await response.json();
     
-            if (data.error) {
-                throw new Error(data.error);
+            // Check if the data is valid and contains necessary fields
+            if (data.type !== "video") {
+                throw new Error("Invalid video data");
             }
     
+            // Set video title and thumbnail
             document.getElementById('videoTitle').textContent = data.title;
-            document.getElementById('channelName').textContent = data.author_name;
-            document.getElementById('channelAvatar').src = data.thumbnail_url;
+            document.getElementById('channelAvatar').src = data.videoThumbnails[0].url; // Default to maxres thumbnail
     
-            document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 50000) + 5000} views`;
-            document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 1000} likes`;
-            document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
+            // Set channel name and author details
+            const author = data.author || "Unknown Author"; // Fallback for missing author
+            const authorAvatar = data.authorThumbnails && data.authorThumbnails.length > 0
+                ? data.authorThumbnails[0].url
+                : 'path/to/placeholder-avatar.jpg'; // Placeholder for missing avatar
+    
+            document.getElementById('channelName').textContent = author;
+            document.getElementById('channelAvatar').src = authorAvatar;
+    
+            // Set viewer and like counts
+            document.getElementById('viewerCount').textContent = `${data.viewCount.toLocaleString()} views`;
+            document.getElementById('likeCount').textContent = `${data.likeCount.toLocaleString()} likes`;
+            document.getElementById('subscriberCount').textContent = `${data.subCountText || "0"} subscribers`;
     
         } catch (error) {
             console.error("Error fetching video details: ", error);
-            
-            // Get random avatar
-            const randomAvatar = await getRandomAvatar(); 
-            
-            // Get random title and channel name
-            const { title, channel } = await getRandomTitleAndChannel();
     
-            document.getElementById('videoTitle').textContent = title;
-            document.getElementById('channelName').textContent = channel;
-            document.getElementById('channelAvatar').src = randomAvatar;
-    
-            document.getElementById('viewerCount').textContent = `${Math.floor(Math.random() * 500) + 100} watching live`;
-            document.getElementById('likeCount').textContent = `${Math.floor(Math.random() * 10000) + 500} likes`;
-            document.getElementById('subscriberCount').textContent = `${Math.floor(Math.random() * 20000) + 5000} subscribers`;
+            // Set default values in case of an error
+            document.getElementById('videoTitle').textContent = "Error fetching title";
+            document.getElementById('channelName').textContent = "Error fetching author";
+            document.getElementById('channelAvatar').src = 'path/to/error-placeholder-avatar.jpg'; // Placeholder on error
+            document.getElementById('viewerCount').textContent = "0 watching live";
+            document.getElementById('likeCount').textContent = "0 likes";
+            document.getElementById('subscriberCount').textContent = "0 subscribers";
         }
     }
     

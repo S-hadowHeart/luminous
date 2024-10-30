@@ -169,7 +169,7 @@
                         event.preventDefault();
                         const videoId = event.currentTarget.getAttribute('data-video-id');
                         iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                        fetchVideoDetails(videoId)
+                        fetchVideoDetails(videoId);
                     });
                 });
             }

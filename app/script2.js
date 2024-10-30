@@ -464,6 +464,14 @@
                         videoElement.addEventListener('click', () => {
                             const videoId = video.videoId;
                             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                           if (chatToggle.value !== 'hide') {
+                                const warningMessage = document.getElementById('warning-message');
+                                const chatSection = document.getElementById('live-chat-section');
+                                // Change the selected option to 'hide'
+                                chatSection.classList.add('hidden');
+                                warningMessage.classList.add('hidden');
+                                chatToggle.value = 'off';
+                              }
                             fetchVideoDetails(videoId); // Call your function to fetch video details
                             document.getElementById('searchResultsModal').classList.add('hidden'); // Close the modal
                         });

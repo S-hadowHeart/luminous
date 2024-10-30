@@ -15,33 +15,33 @@
 
     <!-- Header -->
     <header class="bg-gray-800 py-2 px-4 flex items-center justify-between fixed w-full z-10">
-        
         <button id="toggleSidebar" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center">
             <i class="ri-menu-line"></i>
         </button>
-        <div id="apps"class="flex items-center cursor-pointer" id="backToWebex">
+        <div id="apps" class="flex items-center cursor-pointer" id="backToWebex">
             <img src="img/ico3.png?height=30&width=30" alt="Luminous Logo" class="w-8 h-8 mr-2">
             <h1 class="text-xl font-bold">Luminous</h1>
         </div>
-
+    
         <div class="flex items-center">
             <button id="configButton" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
                 <i class="ri-settings-3-line"></i>
             </button>
+            <button id="funButton" class="bg-green-500 w-10 h-10 rounded-full flex items-center justify-center ml-2" title="Go to Fun App!">
+                <i class="ri-lightbulb-line"></i> <!-- Icon for fun button -->
+            </button>
             <div class="relative">
-                <button id="profileButton"
-                    class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
+                <button id="profileButton" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center ml-2">
                     <i class="ri-user-3-line"></i>
                 </button>
                 <!-- Profile Dropdown -->
-                <div id="profileDropdown"
-                    class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20 hidden">
-                    <button id="logoutButton"
-                        class="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">Logout</button>
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20 hidden">
+                    <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">Logout</button>
                 </div>
             </div>
         </div>
     </header>
+    
 
     <!-- Side Menu -->
     <div id="sideMenu" class="w-64 h-screen bg-gray-800 fixed top-19 transform transition-transform duration-300">
@@ -106,9 +106,11 @@
     
         <h3 class="text-2xl font-semibold mt-4 text-white">Step 5: Open the App</h3>
         <p class="mb-4 text-gray-300">After saving your details, click on the luminous icon or text at the top of the page to open the app and start exploring!</p>
+        
+        <h3 class="text-2xl font-semibold mt-4 text-white">✨ Use Without API Key</h3>
+        <p class="mb-4 text-gray-300">You can also explore the app without needing an API key! Just click the lamp icon, and start enjoying the features right away!</p>
     </div>
     
-
     <div id="startMeetingSection" class="flex flex-col items-center justify-center p-8 mt-16 mx-auto hidden max-w-3xl">
         <h2 class="text-3xl font-bold mb-6 text-white">🎉 How to Start a Webex Meeting!</h2>
         <p class="mb-4 text-gray-300">Let's get you ready to host or join a meeting with your friends. Here’s what you

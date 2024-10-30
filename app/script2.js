@@ -12,21 +12,15 @@
         }
     
         // Retrieve values from cookies
-        const API_KEY = "AIzaSyAOf49NbII0E2O_iDA4njaCt3ANOJBJPNk";
+        const API_KEY = "api";
         const VIDEO_ID = 'OO2kPK5-qno';
         const CHANNEL_ID = getCookie('channelId');
         const LIVE_CHAT_ID = getCookie('chatId');
     
-        // playPauseButton.innerHTML = '<i class="ri-pause-fill text-2xl"></i>';
-                   
-                
-        // Check if any of the cookies are not set
-        // if (!API_KEY || !VIDEO_ID || !CHANNEL_ID) {
-        //     // Redirect to index.html if any cookie is missing
-        //     window.location.href = '../index.html';
-        // }
+    
             const playPauseButton = document.getElementById('playPauseButton');
             const playPauseBtn = document.getElementById('playPauseBtn');
+            const audioElement = document.getElementById('chillhop-audio');
     
             const volumeButton = document.getElementById('volumeButton');
             const pauseOverlay = document.getElementById('pauseOverlay');
@@ -77,85 +71,9 @@
             let currentUrl = 'https://web.webex.com/meetings'; // Store current iframe URL
     
             // Shuffle function to randomize the video array
-            function shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-                return array;
-            }
-    
-            // Fetch videos for each category and combine them
-            async function fetchAllVideos() {
-                let allVideos = [];
-                for (const category of categories) {
-                    try {
-                        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${category}&type=video&key=${API_KEY}&maxResults=5`);
-                        const data = await response.json();
-                        if (data.items) {
-                            allVideos = allVideos.concat(data.items);
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching videos for category "${category}":`, error);
-                    }
-                }
-                
-                // Shuffle the combined video list
-                allVideos = shuffleArray(allVideos);
-    
-                // Display all videos randomly
-                allVideos.forEach(item => {
-                    const videoElement = document.createElement('div');
-                    videoElement.classList.add('bg-gray-800', 'rounded-lg', 'overflow-hidden', 'shadow-md', 'hover:shadow-lg', 'transition-shadow', 'duration-300');
-                    
-                    videoElement.innerHTML = `
-                        <a href="#" class="block video-link" data-video-id="${item.id.videoId}">
-                            <img src="${item.snippet.thumbnails.medium.url}" alt="${item.snippet.title}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-300 hover:text-red-600 transition-colors duration-300">${item.snippet.title}</h3>
-                                <p class="text-sm text-gray-400">${item.snippet.channelTitle}</p>
-                            </div>
-                        </a>
-                    `;
-                    videoContainer.appendChild(videoElement);
-                });
-    
-                addVideoLinkEventListeners(); // Add event listeners to video links
-            }
-    
-            // Fetch and display suggested videos
-            async function fetchSuggestedVideos() {
-                let suggestedVideos = [];
-                for (const category of categories) {
-                    try {
-                        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${category}&type=video&key=${API_KEY}&maxResults=3`);
-                        const data = await response.json();
-                        if (data.items) {
-                            suggestedVideos = suggestedVideos.concat(data.items);
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching suggested videos for category "${category}":`, error);
-                    }
-                }
-    
-                suggestedVideos.forEach(video => {
-                    const suggestedVideoElement = document.createElement('div');
-                    suggestedVideoElement.classList.add('bg-gray-800', 'rounded-lg', 'overflow-hidden', 'shadow-md', 'hover:shadow-lg', 'transition-shadow', 'duration-300');
-    
-                    suggestedVideoElement.innerHTML = `
-                        <a href="#" class="block video-link" data-video-id="${video.id.videoId}">
-                            <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-300 hover:text-red-600 transition-colors duration-300">${video.snippet.title}</h3>
-                                <p class="text-sm text-gray-400">${video.snippet.channelTitle}</p>
-                            </div>
-                        </a>
-                    `;
-                    suggestedVideosContainer.appendChild(suggestedVideoElement);
-                });
-    
+            
                 addVideoLinkEventListeners(); // Add event listeners to suggested videos
-            }
+            
     
             // Add click event listeners to video links
             function addVideoLinkEventListeners() {
@@ -194,46 +112,23 @@
             });
     
     
-            function onYouTubeIframeAPIReady() {
-        youtubePlayer = new YT.Player('youtubePlayer', {
-            height: '0',
-            width: '0',
-            videoId: VIDEO_ID,
-            playerVars: {
-                'autoplay': 0,
-                'controls': 0,
-                'showinfo': 0,
-                'rel': 0,
-                'modestbranding': 1,
-                'vq': 'tiny'  // Set quality to the lowest available (144p)
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
     
-    function onPlayerReady(event) {
-        // Set the initial quality to the lowest available
-        event.target.setPlaybackQuality('small');
-    }
-    
-    
-            function onPlayerStateChange(event) {
-                // Update play/pause button based on player state
-                if (event.data == YT.PlayerState.PLAYING) {
-                    playPauseButton.innerHTML = '<i class="ri-pause-fill text-2xl"></i>';
-                    isPlaying = true;
-                     
-                    pauseOverlay.classList.add('hidden');
-                } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
-                    playPauseButton.innerHTML = '<i class="ri-play-fill text-2xl"></i>';
-                    isPlaying = false;
-                    if(!vol)
-                    {pauseOverlay.classList.remove('hidden');}
-                }
-            }
+    function onPlayerStateChange() {
+        // Check if the audio is playing or not
+        if (isPlaying) {
+          playPauseButton.innerHTML = '<i class="ri-pause-fill text-2xl"></i>';
+          pauseOverlay.classList.add('hidden');
+        } else {
+          playPauseButton.innerHTML = '<i class="ri-play-fill text-2xl"></i>';
+          if (!audioElement.muted) {
+            pauseOverlay.classList.remove('hidden');
+          }
+        }
+      }
+      
+      
+      
+      
 
             
     async function getRandomWord() {
@@ -289,37 +184,6 @@
         }
     }
     
-      
-  
-    
-            // Fetch video details
-            // async function fetchVideoDetails(VIDEO_ID) {
-            //     const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,liveStreamingDetails&id=${VIDEO_ID}&key=${API_KEY}`;
-            //     try {
-            //         const response = await fetch(url);
-            //         const data = await response.json();
-            //         const video = data.items[0];
-                    
-            //         document.getElementById('videoTitle').textContent = video.snippet.title;
-            //         document.getElementById('viewerCount').textContent = `${video.liveStreamingDetails.concurrentViewers} watching`;
-            //         document.getElementById('likeCount').textContent = video.statistics.likeCount;
-            //         const channelId = video.snippet.channelId
-            //         fetchChannelDetails(channelId)
-    
-            //         if (video.liveStreamingDetails && video.liveStreamingDetails.activeLiveChatId) {
-            //     // Update LIVE_CHAT_ID to the new live chat ID
-            //     const newLiveChatId = video.liveStreamingDetails.activeLiveChatId;
-                
-            //     // Call the live chat fetching function
-            //     fetchLiveChat(newLiveChatId);
-            // } else {
-            //     // Handle the case when it's not a live video or no live chat is available
-            //     console.log('This video is not a live stream or has no active live chat.');
-            // }
-            //     } catch (error) {
-            //         console.error('Error fetching video details:', error);
-            //     }
-            // }
     
             // Fetch channel details
             async function fetchChannelDetails(CHANNEL_ID) {
@@ -390,13 +254,16 @@
     
             // Toggle play/pause
             playPauseButton.addEventListener('click', () => {
-                if (isPlaying) {
-                    youtubePlayer.pauseVideo();
-                    
+                if (audioElement.paused) {
+                    audioElement.play();
+                    isPlaying = true;
+                    playPauseButton.innerHTML = '<i class="ri-pause-fill"></i>';
                 } else {
-                    youtubePlayer.playVideo();
-                    
+                    audioElement.pause();
+                    isPlaying = false;
+                    playPauseButton.innerHTML = '<i class="ri-play-fill"></i>';
                 }
+                onPlayerStateChange();
             });
     
             help.addEventListener('click', () => {
@@ -405,60 +272,20 @@
     
             // Toggle volume (mute/unmute)
             volumeButton.addEventListener('click', () => {
-                event.stopPropagation();
-                if (youtubePlayer.isMuted()) {
-                    vol = false;
-                    youtubePlayer.unMute();
-                    youtubePlayer.playVideo();
-                    volumeButton.innerHTML = '<i class="ri-volume-up-fill text-2xl"></i>';
+                audioElement.muted = !audioElement.muted;
+                if (audioElement.muted) {
+                  volumeIcon.classList.remove('ri-volume-up-fill');
+                  volumeIcon.classList.add('ri-volume-mute-fill');
                 } else {
-                    vol = true;
-                    youtubePlayer.mute();
-                    youtubePlayer.pauseVideo();
-                    volumeButton.innerHTML = '<i class="ri-volume-mute-fill text-2xl"></i>';
+                  volumeIcon.classList.remove('ri-volume-mute-fill');
+                  volumeIcon.classList.add('ri-volume-up-fill');
                 }
-            });
+              });
     
             // Initial setup
            
             fetchVideoDetails(VIDEO_ID);
-            fetchChannelDetails(CHANNEL_ID);
-            fetchLiveChat(LIVE_CHAT_ID);
-    
-            // Fetch and display videos on page load
-            fetchAllVideos();
-            fetchSuggestedVideos();
-    
             
-    
-            // setInterval(() => {
-            //         fetchLiveChat(LIVE_CHAT_ID);
-            //         fetchVideoDetails(VIDEO_ID);
-            //     }, 10000);
-            
-            //     // Send chat message (placeholder function)
-            //     document.getElementById('send-chat').addEventListener('click', () => {
-            //         const input = document.getElementById('chat-input');
-            //         const message = input.value;
-            //         if (message) {
-            //             try {
-            //         // Add your logic to send the message to the YouTube API
-            //         // For example, you would use fetch to send a POST request to the YouTube Live Chat API
-                    
-            //         const chatContainer = document.getElementById('live-chat');
-            //         const chatMessage = document.createElement('div');
-            //         chatMessage.className = 'bg-gray-800 p-2 rounded';
-            //         chatMessage.innerHTML = `<strong>You:</strong> ${message}`;
-            //         chatContainer.appendChild(chatMessage);
-            
-            //         // Auto-scroll to the bottom
-            //         chatContainer.scrollTop = chatContainer.scrollHeight;
-            //         input.value = ''; // Clear the input after sending
-            //     } catch (error) {
-            //         console.error('Error sending chat message:', error);
-            //     }
-            //         }
-            //     });
     
                 const qualityOptions = document.querySelectorAll('input[name="quality"]');
                 qualityOptions.forEach(option => {

@@ -12,7 +12,7 @@
         }
     
         // Retrieve values from cookies
-        const API_KEY = "api";
+        const API_KEY = "AIzaSyAOf49NbII0E2O_iDA4njaCt3ANOJBJPNk";
         const VIDEO_ID = 'OO2kPK5-qno';
         const CHANNEL_ID = getCookie('channelId');
         const LIVE_CHAT_ID = getCookie('chatId');
@@ -88,6 +88,11 @@
                         const videoId = event.currentTarget.getAttribute('data-video-id');
                         fetchVideoDetails(videoId);
                         iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        if (!audioElement.muted) {
+                            audioElement.muted = !audioElement.muted;
+                            volumeIcon.classList.remove('ri-volume-up-fill');
+                            volumeIcon.classList.add('ri-volume-mute-fill');
+                        }
                     });
                 });
             }
@@ -97,6 +102,12 @@
                 iframe.src = currentUrl;
                 if (mediaControls.classList.contains('hidden')) {
                     mediaControls.classList.remove('hidden');
+                }
+                if (audioElement.muted) {
+                    audioElement.muted = !audioElement.muted;
+                    volumeIcon.classList.remove('ri-volume-mute-fill');
+                    volumeIcon.classList.add('ri-volume-up-fill');
+                    
                 }
                 fetchVideoDetails(VIDEO_ID)
                 
@@ -411,6 +422,11 @@
                 // Update the iframe to play the entered video
                 iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 fetchVideoDetails(videoId);
+                if (!audioElement.muted) {
+                    audioElement.muted = !audioElement.muted;
+                    volumeIcon.classList.remove('ri-volume-up-fill');
+                    volumeIcon.classList.add('ri-volume-mute-fill');
+                }
             }
         }
     });
